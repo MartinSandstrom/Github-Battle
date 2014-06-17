@@ -345,7 +345,12 @@ module.exports = function (grunt) {
         'svgmin'
       ]
     },
-
+    'gh-pages': {
+      options: {
+        base: 'dist'
+      },
+      src: ['**']
+    },
     // Test settings
     karma: {
       unit: {
@@ -405,5 +410,10 @@ module.exports = function (grunt) {
     'newer:jshint',
     'test',
     'build'
+  ]);
+
+  grunt.registerTask('publish', [
+    'build',
+    'gh-pages'
   ]);
 };
