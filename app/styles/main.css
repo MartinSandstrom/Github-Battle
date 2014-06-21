@@ -77,3 +77,18 @@ body {
     border-bottom: 0;
   }
 }
+
+.star-animation {
+    color: gold;
+}
+
+.star-animation.ng-hide-remove {
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+}
+
+.star-animation.ng-hide-add {
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+    display: block !important;
+}

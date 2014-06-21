@@ -125,7 +125,7 @@ angular.module('githubArenaApp')
 				});
 
 				$scope.ready = true;
-				$scope.wait();
+				$scope.nextRound();
 			});
 		};
 
