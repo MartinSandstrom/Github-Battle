@@ -14,6 +14,9 @@ angular.module('githubArenaApp')
 		$scope.roundsDone = false;
 		$scope.master = -1;
 		$scope.rounds = [];
+		$scope.countDelay = 1;
+		var winnerDelay = 1400;
+		var roundDelay = 1500; //2000;
 		var currentRound = 0;
 		var rounds = [
 			{
@@ -121,14 +124,6 @@ angular.module('githubArenaApp')
 
 				});
 
-				angular.forEach(rounds, function(round) {
-					var winner = round.score($scope.players[0]) > round.score($scope.players[1]) ? 0 : 1;
-					round.winner = $scope.players[winner];
-					$scope.players[winner].total += 1;
-				});
-
-				$scope.master = $scope.players[0].total > $scope.players[1].total ? 0 : 1;
-
 				$scope.ready = true;
 				$scope.wait();
 			});
@@ -137,10 +132,19 @@ angular.module('githubArenaApp')
 		$scope.nextRound = function () {
 			if (currentRound === rounds.length) {
 				$scope.roundsDone = true;
+				$scope.master = $scope.players[0].total > $scope.players[1].total ? 0 : 1;
 				return;
 			}
 
-			$scope.rounds.push(rounds[currentRound]);
+			var round = rounds[currentRound];
+
+			$timeout(function () {
+				var winner = round.score($scope.players[0]) > round.score($scope.players[1]) ? 0 : 1;
+				round.winner = $scope.players[winner];
+				$scope.players[winner].total += 1;
+			}, winnerDelay);
+
+			$scope.rounds.push(round);
 			currentRound++;
 
 			$scope.wait();
@@ -149,6 +153,6 @@ angular.module('githubArenaApp')
 		$scope.wait = function () {
 			$timeout(function () {
 				$scope.nextRound();
-			}, 2000);
+			}, roundDelay);
 		};
   });

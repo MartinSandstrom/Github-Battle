@@ -14,7 +14,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngTouch',
-		'ui.bootstrap'
+		'ui.bootstrap',
+		'countTo'
   ])
   .config(function ($routeProvider) {
     $routeProvider

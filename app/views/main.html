@@ -8,11 +8,34 @@
   <br>
   <br>
 
-  <p ng-hide="ready"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
-  <p ng-show="ready"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT AGAIN <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
+  <p ng-hide="roundsDone"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
+  <p ng-show="roundsDone"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT AGAIN <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
 </div>
 
 <div ng-show="ready">
+  <div class="row" ng-repeat="round in rounds">
+    <div class="col-sm-1 text-center">
+      <span class="glyphicon glyphicon-star" ng-show="round.winner == players[0]"></span>
+    </div>
+
+    <div class="col-sm-4 text-right">
+      <span count-to="{{round.score(players[0])}}" value="{{0}}" duration="{{countDelay}}"></span>
+    </div>
+
+    <div class="col-sm-2 text-center">
+      {{round.title}}
+    </div>
+
+    <div class="col-sm-4 text-left">
+      <span count-to="{{round.score(players[1])}}" value="{{0}}" duration="{{countDelay}}"></span>
+    </div>
+
+    <div class="col-sm-1 text-center">
+      <span class="glyphicon glyphicon-star" ng-show="round.winner == players[1]"></span>
+    </div>
+  </div>
+
+<!-- Generic, for more than 2 players
   <div class="row" ng-repeat="round in rounds">
     <div class="col-sm-2 text-center">
       {{round.title}}
@@ -28,10 +51,10 @@
       </div>
     </div>
   </div>
-
-  <hr>
-
+-->
   <div class="row" ng-show="roundsDone">
+    <hr>
+
     <div class="col-sm-6 text-center">
       <rating ng-model="players[0].total"></rating>
     </div>
