@@ -23,8 +23,7 @@ angular.module('githubArenaApp')
 				title: 'Repos',
 				score: function (player) {
 					return player.userData.length;
-				},
-				winner: undefined
+				}
 			},
 			{
 				title: 'Repos stars',
@@ -37,8 +36,7 @@ angular.module('githubArenaApp')
 					});
 
 					return stars;
-				},
-				winner: undefined
+				}
 			},
 			{
 				title: 'Forks',
@@ -51,40 +49,21 @@ angular.module('githubArenaApp')
 					});
 
 					return forks;
-				},
-				winner: undefined
+				}
 			},
 			{
 				title: 'Gists',
 				score: function (player) {
 					return player.repoData.public_gists;
-				},
-				winner: undefined
+				}
 			},
 			{
 				title: 'Followers',
 				score: function (player) {
 					return player.repoData.followers;
-				},
-				winner: undefined
-			},
+				}
+			}
 		];
-
-		$scope.properties = [
-			'repos',
-			'repoStars',
-			'forks',
-			'gists',
-			'userFollowers'
-		];
-
-		$scope.propertyNames = {
-			repos: 'Repos',
-			repoStars: 'Repo stars',
-			forks: 'Forks',
-			gists: 'Gists',
-			userFollowers: 'User followers'
-		};
 
 		$scope.winner = {
 			repos: -1,
@@ -150,15 +129,15 @@ angular.module('githubArenaApp')
 				return;
 			}
 
-			var round = rounds[currentRound];
+			$scope.rounds.push(rounds[currentRound]);
+			(function (current) {
+				$timeout(function () {
+					var winner = rounds[current].score($scope.players[0]) > rounds[current].score($scope.players[1]) ? 0 : 1;
+					$scope.rounds[current].winner = $scope.players[winner];
+					$scope.players[winner].total += 1;
+				}, winnerDelay);
+			}(currentRound));
 
-			$timeout(function () {
-				var winner = round.score($scope.players[0]) > round.score($scope.players[1]) ? 0 : 1;
-				round.winner = $scope.players[winner];
-				$scope.players[winner].total += 1;
-			}, winnerDelay);
-
-			$scope.rounds.push(round);
 			currentRound++;
 
 			$scope.wait();
