@@ -8,10 +8,64 @@
  * Controller of the githubArenaApp
  */
 angular.module('githubArenaApp')
-  .controller('MainCtrl', function ($scope, $http, $q) {
+  .controller('MainCtrl', function ($scope, $http, $q, $timeout) {
 		$scope.players = [];
 		$scope.ready = false;
+		$scope.roundsDone = false;
 		$scope.master = -1;
+		$scope.rounds = [];
+		var currentRound = 0;
+		var rounds = [
+			{
+				title: 'Repos',
+				score: function (player) {
+					return player.userData.length;
+				},
+				winner: undefined
+			},
+			{
+				title: 'Repos stars',
+				score: function (player) {
+					var stargazers = _.map(player.userData, function (repo) {
+						return repo.stargazers_count;
+					});
+					var stars = _.reduce(stargazers, function (memo, num) {
+						return memo + num;
+					});
+
+					return stars;
+				},
+				winner: undefined
+			},
+			{
+				title: 'Forks',
+				score: function (player) {
+					var forks = _.map(player.userData,function(repo){
+						return repo.forks_count;
+					});
+					var forks = _.reduce(forks, function(sum, num){
+						return sum + num;
+					});
+
+					return forks;
+				},
+				winner: undefined
+			},
+			{
+				title: 'Gists',
+				score: function (player) {
+					return player.repoData.public_gists;
+				},
+				winner: undefined
+			},
+			{
+				title: 'Followers',
+				score: function (player) {
+					return player.repoData.followers;
+				},
+				winner: undefined
+			},
+		];
 
 		$scope.properties = [
 			'repos',
@@ -39,66 +93,62 @@ angular.module('githubArenaApp')
 
 		$scope.players[0] = {
 			name: 'seriema',
-			repos: 0,
-			repoStars: 0,
-			forks: 0,
-			gists: 0,
-			userFollowers: 0,
 			total: 0
 		};
 
 		$scope.players[1] = {
 			name: 'odetocode',
-			repos: 0,
-			repoStars: 0,
-			forks: 0,
-			gists: 0,
-			userFollowers: 0,
 			total: 0
 		};
 
 		$scope.fight = function () {
 			var promises = [];
+			$scope.roundsDone = false;
 
 			angular.forEach($scope.players, function(player){
 				promises.push($http.get('https://api.github.com/users/' + player.name + '/repos')
 					.then(function(response){
-						player.repos = response.data.length;
-
-						var stargazers = _.map(response.data, function (repo) {
-							return repo.stargazers_count;
-						});
-						player.repoStars = _.reduce(stargazers, function (memo, num) {
-							return memo + num;
-						});
-
-						var forks = _.map(response.data,function(repo){
-								return repo.forks_count;
-						});
-						player.forks = _.reduce(forks, function(sum, num){
-							 return sum + num;
-						});
+						player.userData = response.data;
 					}));
 				promises.push($http.get('https://api.github.com/users/' + player.name)
 					.success(function(data){
-						 player.userFollowers = data.followers;
-						 player.gists = data.public_gists;
+						player.repoData = data;
 					}));
 			});
 
 			$q.all(promises).then(function () {
 				angular.forEach($scope.players, function(player) {
+
 				});
 
-				angular.forEach($scope.properties, function(property) {
-					var winner = $scope.players[0][property] > $scope.players[1][property] ? 0 : 1;
-					$scope.winner[property] = winner;
+				angular.forEach(rounds, function(round) {
+					var winner = round.score($scope.players[0]) > round.score($scope.players[1]) ? 0 : 1;
+					round.winner = $scope.players[winner];
 					$scope.players[winner].total += 1;
 				});
 
 				$scope.master = $scope.players[0].total > $scope.players[1].total ? 0 : 1;
 
 				$scope.ready = true;
+				$scope.wait();
 			});
+		};
+
+		$scope.nextRound = function () {
+			if (currentRound === rounds.length) {
+				$scope.roundsDone = true;
+				return;
+			}
+
+			$scope.rounds.push(rounds[currentRound]);
+			currentRound++;
+
+			$scope.wait();
+		};
+
+		$scope.wait = function () {
+			$timeout(function () {
+				$scope.nextRound();
+			}, 2000);
 		};
   });

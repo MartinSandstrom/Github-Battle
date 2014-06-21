@@ -8,35 +8,30 @@
   <br>
   <br>
 
-  <p><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
+  <p ng-hide="ready"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
+  <p ng-show="ready"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT AGAIN <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
 </div>
 
 <div ng-show="ready">
-  <div class="row" ng-repeat="prop in properties">
-    <div class="col-sm-1 text-left">
-      <span class="glyphicon glyphicon-star" ng-show="winner[prop] == 0"></span>
-    </div>
-
-    <div class="col-sm-4 text-right">
-      {{players[0][prop]}}
-    </div>
-
+  <div class="row" ng-repeat="round in rounds">
     <div class="col-sm-2 text-center">
-      {{propertyNames[prop]}}
+      {{round.title}}
     </div>
 
-    <div class="col-sm-4">
-      {{players[1][prop]}}
-    </div>
+    <div ng-repeat="player in players">
+      <div class="col-sm-1 text-left">
+        <span class="glyphicon glyphicon-star" ng-show="round.winner == player"></span>
+      </div>
 
-    <div class="col-sm-1 text-right">
-      <span class="glyphicon glyphicon-star" ng-show="winner[prop] == 1"></span>
+      <div class="col-sm-4 text-right">
+        {{round.score(player)}}
+      </div>
     </div>
   </div>
 
   <hr>
 
-  <div class="row">
+  <div class="row" ng-show="roundsDone">
     <div class="col-sm-6 text-center">
       <rating ng-model="players[0].total"></rating>
     </div>
@@ -45,7 +40,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" ng-show="roundsDone">
     <h2 class="text-center">
       WINNER IS {{players[master].name}}!
     </h2>
