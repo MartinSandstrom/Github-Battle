@@ -12,7 +12,7 @@ angular.module('githubArenaApp')
 		$scope.players = [];
 		$scope.ready = false;
 		$scope.roundsDone = false;
-		$scope.master = -1;
+		$scope.master = {};
 		$scope.rounds = [];
 		$scope.countDelay = 1;
 		var winnerDelay = 1400;
@@ -104,6 +104,19 @@ angular.module('githubArenaApp')
 			total: 0
 		};
 
+		$scope.reset = function(){
+			$scope.ready = false;
+			$scope.roundsDone = false;
+			$scope.master = {};
+			$scope.rounds = [];
+			currentRound = 0;
+			angular.forEach($scope.players, function(player) {
+				player.total = 0;
+				player.userData = {};
+				player.repoData = {};
+			});
+		};
+
 		$scope.fight = function () {
 			var promises = [];
 			$scope.roundsDone = false;
@@ -132,7 +145,8 @@ angular.module('githubArenaApp')
 		$scope.nextRound = function () {
 			if (currentRound === rounds.length) {
 				$scope.roundsDone = true;
-				$scope.master = $scope.players[0].total > $scope.players[1].total ? 0 : 1;
+				var master = $scope.players[0].total > $scope.players[1].total ? 0 : 1;
+				$scope.master.name = $scope.players[master].name;
 				return;
 			}
 

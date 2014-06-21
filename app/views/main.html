@@ -8,8 +8,8 @@
   <br>
   <br>
 
-  <p ng-hide="roundsDone"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
-  <p ng-show="roundsDone"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT AGAIN <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
+  <p ng-hide="ready"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
+  <p ng-show="roundsDone"><span ng-click="reset()" class="btn btn-lg btn-success">FIGHT AGAIN <span class="glyphicon glyphicon-exclamation-sign"></span></span></p>
 </div>
 
 <div ng-show="ready">
@@ -65,7 +65,7 @@
 
   <div class="row" ng-show="roundsDone">
     <h2 class="text-center">
-      WINNER IS {{players[master].name}}!
+      WINNER IS {{master.name}}!
     </h2>
   </div>
 </div>
