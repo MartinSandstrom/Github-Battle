@@ -8,7 +8,7 @@
  * Controller of the githubArenaApp
  */
 angular.module('githubArenaApp')
-  .controller('MainCtrl', function ($scope, $http, $q, $timeout) {
+  .controller('MainCtrl', function ($scope, $q, $timeout, Github) {
 		$scope.players = [];
 		$scope.ready = false;
 		$scope.roundsDone = false;
@@ -101,13 +101,13 @@ angular.module('githubArenaApp')
 			$scope.roundsDone = false;
 
 			angular.forEach($scope.players, function(player){
-				promises.push($http.get('https://api.github.com/users/' + player.name + '/repos')
+				promises.push(Github.repo(player.name)
 					.then(function(response){
 						player.userData = response.data;
 					}));
-				promises.push($http.get('https://api.github.com/users/' + player.name)
-					.success(function(data){
-						player.repoData = data;
+				promises.push(Github.user(player.name)
+					.then(function(response){
+						player.repoData = response.data;
 					}));
 			});
 
@@ -129,7 +129,9 @@ angular.module('githubArenaApp')
 				return;
 			}
 
-			$scope.rounds.push(rounds[currentRound]);
+			var newRound = {};
+			angular.copy(rounds[currentRound], newRound);
+			$scope.rounds.push(newRound);
 			(function (current) {
 				$timeout(function () {
 					var winner = rounds[current].score($scope.players[0]) > rounds[current].score($scope.players[1]) ? 0 : 1;

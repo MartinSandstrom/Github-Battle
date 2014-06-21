@@ -15,7 +15,6 @@
 <div ng-show="ready">
   <div class="row" ng-repeat="round in rounds">
     <div class="col-sm-1 text-center">
-      {{round.winner}}
       <span class="glyphicon glyphicon-star star-animation" ng-show="round.winner === players[0]"></span>
     </div>
 
@@ -32,7 +31,6 @@
     </div>
 
     <div class="col-sm-1 text-center">
-      {{round.winner}}
       <span class="glyphicon glyphicon-star star-animation" ng-show="round.winner === players[1]"></span>
     </div>
   </div>
