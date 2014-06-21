@@ -1,1 +1,17 @@
-<div class="jumbotron"> <h1>Github battle</h1> <input placeholder="You" type="text" ng-model="players[0].name"> VS <input placeholder="Enemy" type="text" ng-model="players[1].name"> <br> <br> <p><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p> </div> <div ng-show="ready"> <div class="row" ng-repeat="prop in properties"> <div class="col-sm-1 text-left"> <span class="glyphicon glyphicon-star" ng-show="winner[prop] == 0"></span> </div> <div class="col-sm-4 text-right"> {{players[0][prop]}} </div> <div class="col-sm-2 text-center"> {{propertyNames[prop]}} </div> <div class="col-sm-4"> {{players[1][prop]}} </div> <div class="col-sm-1 text-right"> <span class="glyphicon glyphicon-star" ng-show="winner[prop] == 1"></span> </div> </div> <hr> <div class="row"> <div class="col-sm-6 text-center"> <rating ng-model="players[0].total"></rating> </div> <div class="col-sm-6 text-center"> <rating ng-model="players[1].total"></rating> </div> </div> <div class="row"> <h2 class="text-center"> WINNER IS {{players[master].name}}! </h2> </div> </div>
+<div class="jumbotron"> <h1>Github battle</h1> <input placeholder="You" type="text" ng-model="players[0].name"> VS <input placeholder="Enemy" type="text" ng-model="players[1].name"> <br> <br> <p ng-hide="ready"><span ng-click="fight()" class="btn btn-lg btn-success">FIGHT <span class="glyphicon glyphicon-exclamation-sign"></span></span></p> <p ng-show="roundsDone"><span ng-click="reset()" class="btn btn-lg btn-success">FIGHT AGAIN <span class="glyphicon glyphicon-exclamation-sign"></span></span></p> </div> <div ng-show="ready"> <div class="row" ng-repeat="round in rounds"> <div class="col-sm-1 text-center"> <span class="glyphicon glyphicon-star star-animation" ng-show="round.winner === players[0]"></span> </div> <div class="col-sm-4 text-right"> <span count-to="{{round.score(players[0])}}" value="{{0}}" duration="{{countDelay}}"></span> </div> <div class="col-sm-2 text-center"> {{round.title}} </div> <div class="col-sm-4 text-left"> <span count-to="{{round.score(players[1])}}" value="{{0}}" duration="{{countDelay}}"></span> </div> <div class="col-sm-1 text-center"> <span class="glyphicon glyphicon-star star-animation" ng-show="round.winner === players[1]"></span> </div> </div> <!-- Generic, for more than 2 players
+  <div class="row" ng-repeat="round in rounds">
+    <div class="col-sm-2 text-center">
+      {{round.title}}
+    </div>
+
+    <div ng-repeat="player in players">
+      <div class="col-sm-1 text-left">
+        <span class="glyphicon glyphicon-star" ng-show="round.winner == player"></span>
+      </div>
+
+      <div class="col-sm-4 text-right">
+        {{round.score(player)}}
+      </div>
+    </div>
+  </div>
+--> <div class="row" ng-show="roundsDone"> <hr> <div class="col-sm-6 text-center"> <rating ng-model="players[0].total"></rating> </div> <div class="col-sm-6 text-center"> <rating ng-model="players[1].total"></rating> </div> </div> <div class="row" ng-show="roundsDone"> <h2 class="text-center"> WINNER IS {{master.name}}! </h2> </div> </div>
