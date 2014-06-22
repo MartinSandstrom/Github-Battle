@@ -44,13 +44,13 @@ angular.module('githubArenaApp')
 		];
 
 		function countRepoProperty(player, property) {
-			var stargazers = _.map(player.repoData, function (repo) {
+			var properties = _.map(player.repoData, function (repo) {
 				return repo[property];
 			});
-			var stars = _.reduce(stargazers, function (memo, num) {
+			var sum = _.reduce(properties, function (memo, num) {
 				return memo + num;
 			});
-			return stars;
+			return sum;
 		}
 
 		function currentRound() {
