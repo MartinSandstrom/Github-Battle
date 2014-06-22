@@ -20,27 +20,13 @@ angular.module('githubArenaApp')
 			{
 				title: 'Repos stars',
 				score: function (player) {
-					var stargazers = _.map(player.userData, function (repo) {
-						return repo.stargazers_count;
-					});
-					var stars = _.reduce(stargazers, function (memo, num) {
-						return memo + num;
-					});
-
-					return stars;
+					return countRepoProperty(player, 'stargazers_count');
 				}
 			},
 			{
 				title: 'Forks',
 				score: function (player) {
-					var forks = _.map(player.userData,function(repo){
-						return repo.forks_count;
-					});
-					var forks = _.reduce(forks, function(sum, num){
-						return sum + num;
-					});
-
-					return forks;
+					return countRepoProperty(player, 'forks_count');
 				}
 			},
 			{
@@ -56,6 +42,16 @@ angular.module('githubArenaApp')
 				}
 			}
 		];
+
+		function countRepoProperty(player, property) {
+			var stargazers = _.map(player.userData, function (repo) {
+				return repo[property];
+			});
+			var stars = _.reduce(stargazers, function (memo, num) {
+				return memo + num;
+			});
+			return stars;
+		}
 
 		function currentRound() {
 			return rounds[roundIndex];
