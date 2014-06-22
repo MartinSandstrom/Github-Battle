@@ -14,7 +14,7 @@ angular.module('githubArenaApp')
 			{
 				title: 'Repos',
 				score: function (player) {
-					return player.userData.length;
+					return player.repoData.length;
 				}
 			},
 			{
@@ -32,19 +32,19 @@ angular.module('githubArenaApp')
 			{
 				title: 'Gists',
 				score: function (player) {
-					return player.repoData.public_gists;
+					return player.userData.public_gists;
 				}
 			},
 			{
 				title: 'Followers',
 				score: function (player) {
-					return player.repoData.followers;
+					return player.userData.followers;
 				}
 			}
 		];
 
 		function countRepoProperty(player, property) {
-			var stargazers = _.map(player.userData, function (repo) {
+			var stargazers = _.map(player.repoData, function (repo) {
 				return repo[property];
 			});
 			var stars = _.reduce(stargazers, function (memo, num) {

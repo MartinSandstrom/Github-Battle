@@ -48,11 +48,11 @@ angular.module('githubArenaApp')
 			angular.forEach($scope.players, function(player){
 				promises.push(Github.repo(player.name)
 					.then(function(response){
-						player.userData = response.data;
+						player.repoData = response.data;
 					}));
 				promises.push(Github.user(player.name)
 					.then(function(response){
-						player.repoData = response.data;
+						player.userData = response.data;
 					}));
 			});
 
