@@ -65,14 +65,6 @@ angular.module('githubArenaApp')
 			}
 		];
 
-		$scope.winner = {
-			repos: -1,
-			repoStars: -1,
-			forks: -1,
-			gists: -1,
-			userFollowers: -1
-		};
-
 		$scope.players[0] = {
 			name: 'seriema',
 			total: 0
