@@ -78,17 +78,42 @@ body {
   }
 }
 
+/* Custom */
+
+
+@-webkit-keyframes slam-animation {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(5);
+        transform: scale(5);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes slam-animation {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(5);
+        transform: scale(5);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
 .star-animation {
     color: gold;
 }
 
 .star-animation.ng-hide-remove {
-    -webkit-animation: fadeIn 0.5s;
-    animation: fadeIn 0.5s;
-}
-
-.star-animation.ng-hide-add {
-    -webkit-animation: fadeIn 0.5s;
-    animation: fadeIn 0.5s;
-    display: block !important;
+    -webkit-animation: slam-animation 0.5s ease-in;
+    animation: slam-animation 0.5s;
 }

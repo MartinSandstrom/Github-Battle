@@ -15,7 +15,7 @@ angular.module('githubArenaApp')
 		$scope.master = {};
 		$scope.rounds = [];
 		$scope.countDelay = 1;
-		var winnerDelay = 1400;
+		var winnerDelay = 1000;
 		var roundDelay = 1500; //2000;
 		var currentRound = 0;
 		var rounds = [
