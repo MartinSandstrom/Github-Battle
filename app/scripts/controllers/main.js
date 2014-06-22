@@ -8,7 +8,7 @@
  * Controller of the githubArenaApp
  */
 angular.module('githubArenaApp')
-  .controller('MainCtrl', function ($scope, $q, $timeout, Github, _) {
+  .controller('MainCtrl', function ($scope, $q, $timeout, Github, Rounds, _) {
 		$scope.players = [];
 		$scope.ready = false;
 		$scope.roundsDone = false;
@@ -17,53 +17,6 @@ angular.module('githubArenaApp')
 		$scope.countDelay = 1;
 		var winnerDelay = 1000;
 		var roundDelay = 1500; //2000;
-		var currentRound = 0;
-		var rounds = [
-			{
-				title: 'Repos',
-				score: function (player) {
-					return player.userData.length;
-				}
-			},
-			{
-				title: 'Repos stars',
-				score: function (player) {
-					var stargazers = _.map(player.userData, function (repo) {
-						return repo.stargazers_count;
-					});
-					var stars = _.reduce(stargazers, function (memo, num) {
-						return memo + num;
-					});
-
-					return stars;
-				}
-			},
-			{
-				title: 'Forks',
-				score: function (player) {
-					var forks = _.map(player.userData,function(repo){
-						return repo.forks_count;
-					});
-					var forks = _.reduce(forks, function(sum, num){
-						return sum + num;
-					});
-
-					return forks;
-				}
-			},
-			{
-				title: 'Gists',
-				score: function (player) {
-					return player.repoData.public_gists;
-				}
-			},
-			{
-				title: 'Followers',
-				score: function (player) {
-					return player.repoData.followers;
-				}
-			}
-		];
 
 		$scope.players[0] = {
 			name: 'seriema',
@@ -80,7 +33,7 @@ angular.module('githubArenaApp')
 			$scope.roundsDone = false;
 			$scope.master = {};
 			$scope.rounds = [];
-			currentRound = 0;
+			Rounds.reset();
 			angular.forEach($scope.players, function(player) {
 				player.total = 0;
 				player.userData = {};
@@ -114,7 +67,7 @@ angular.module('githubArenaApp')
 		};
 
 		$scope.nextRound = function () {
-			if (currentRound === rounds.length) {
+			if (Rounds.finished()) {
 				$scope.roundsDone = true;
 				var master = $scope.players[0].total > $scope.players[1].total ? 0 : 1;
 				$scope.master.name = $scope.players[master].name;
@@ -122,17 +75,16 @@ angular.module('githubArenaApp')
 			}
 
 			var newRound = {};
-			angular.copy(rounds[currentRound], newRound);
+			angular.copy(Rounds.current(), newRound);
 			$scope.rounds.push(newRound);
 			(function (current) {
 				$timeout(function () {
-					var winner = rounds[current].score($scope.players[0]) > rounds[current].score($scope.players[1]) ? 0 : 1;
-					$scope.rounds[current].winner = $scope.players[winner];
+					var winner = current.score($scope.players[0]) > current.score($scope.players[1]) ? 0 : 1;
+					current.winner = $scope.players[winner];
 					$scope.players[winner].total += 1;
 				}, winnerDelay);
-			}(currentRound));
-
-			currentRound++;
+			}(newRound));
+			Rounds.next();
 
 			$scope.wait();
 		};

@@ -112,8 +112,21 @@ body {
 .star-animation {
     color: gold;
 }
+/*
+.star-animation {
+    opacity: 1;
+    transform: scale(1);
+    -webkit-transition: all ease-in 0.3s 1s;
+    transition: all ease-in 0.3s 1s;
+}
 
+.star-animation.ng-hide {
+    opacity: 0;
+    display: block !important;
+    transform: scale(5);
+}
+*/
 .star-animation.ng-hide-remove {
     -webkit-animation: slam-animation 0.5s ease-in;
-    animation: slam-animation 0.5s;
+    animation: slam-animation 0.5s ease-in;
 }
