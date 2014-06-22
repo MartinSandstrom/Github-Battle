@@ -9,8 +9,8 @@
  */
 angular.module('githubArenaApp')
   .factory('Rounds', function Rounds() {
-		var _currentRound = 0;
-		var _rounds = [
+		var roundIndex = 0;
+		var rounds = [
 			{
 				title: 'Repos',
 				score: function (player) {
@@ -58,31 +58,29 @@ angular.module('githubArenaApp')
 		];
 
 		function currentRound() {
-			return _rounds[_currentRound];
+			return rounds[roundIndex];
 		}
 
 		function nextRound() {
-			_currentRound++;
+			roundIndex++;
 		}
 
 		function roundsFinished() {
-			return _currentRound >= _rounds.length;
+			return roundIndex >= rounds.length;
 		}
 
 		function resetRounds() {
-			_currentRound = 0;
+			roundIndex = 0;
 		}
 
 		function newRound() {
 			var newRound = {};
-			angular.copy(Rounds.current(), newRound);
+			angular.copy(currentRound(), newRound);
 			nextRound();
 			return newRound;
 		}
 
 		return {
-			rounds: _rounds,
-			current: currentRound,
 			finished: roundsFinished,
 			reset: resetRounds,
 			startNew: newRound
