@@ -17,6 +17,7 @@ angular
 		'ui.bootstrap',
 		'countTo'
   ])
+	.value('_', window._)
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

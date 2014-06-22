@@ -8,7 +8,7 @@
  * Controller of the githubArenaApp
  */
 angular.module('githubArenaApp')
-  .controller('MainCtrl', function ($scope, $q, $timeout, Github) {
+  .controller('MainCtrl', function ($scope, $q, $timeout, Github, _) {
 		$scope.players = [];
 		$scope.ready = false;
 		$scope.roundsDone = false;
