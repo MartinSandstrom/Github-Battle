@@ -73,16 +73,18 @@ angular.module('githubArenaApp')
 			_currentRound = 0;
 		}
 
-		function currentRoundIndex() {
-			return _currentRound;
+		function newRound() {
+			var newRound = {};
+			angular.copy(Rounds.current(), newRound);
+			nextRound();
+			return newRound;
 		}
 
 		return {
 			rounds: _rounds,
 			current: currentRound,
-			next: nextRound,
 			finished: roundsFinished,
 			reset: resetRounds,
-			currentIndex: currentRoundIndex
+			startNew: newRound
 		};
   });

@@ -74,8 +74,7 @@ angular.module('githubArenaApp')
 				return;
 			}
 
-			var newRound = {};
-			angular.copy(Rounds.current(), newRound);
+			var newRound = Rounds.startNew();
 			$scope.rounds.push(newRound);
 			(function (current) {
 				$timeout(function () {
@@ -84,7 +83,6 @@ angular.module('githubArenaApp')
 					$scope.players[winner].total += 1;
 				}, winnerDelay);
 			}(newRound));
-			Rounds.next();
 
 			$scope.wait();
 		};
