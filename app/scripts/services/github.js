@@ -9,36 +9,37 @@
  */
 angular.module('githubArenaApp')
   .service('Github', function Github($http, $q) {
-		var baseUrl = 'https://api.github.com/users/';
+      var baseUrl = 'https://api.github.com/users/';
+      var maxPages = '?page=1&per_page=100';
 
-		var cache = {};
-		var ls = window.localStorage.getItem('cache');
-		if (ls)
-			cache = JSON.parse(ls);
+      var cache = {};
+      var ls = window.localStorage.getItem('cache');
+      if (ls)
+          cache = JSON.parse(ls);
 
-		function wrapPromise(data) {
-			var deferred = $q.defer();
-			deferred.resolve({ data: data });
-			return deferred.promise;
-		}
+      function wrapPromise(data) {
+          var deferred = $q.defer();
+          deferred.resolve({ data: data });
+          return deferred.promise;
+      }
 
-		function cachedCall(url) {
-			var cachedData = cache[url];
-			if (cachedData) {
-				return wrapPromise(cachedData);
-			}
+      function cachedCall(url) {
+          var cachedData = cache[url];
+          if (cachedData) {
+              return wrapPromise(cachedData);
+          }
 
-			return $http.get(url).success(function (data) {
-				cache[url] = data;
-				window.localStorage.setItem('cache', JSON.stringify(cache));
-			});
-		}
+          return $http.get(url).success(function (data) {
+              cache[url] = data;
+              window.localStorage.setItem('cache', JSON.stringify(cache));
+          });
+      }
 
-		this.repo = function (username) {
-			return cachedCall(baseUrl + username + '/repos');
-		};
+      this.repo = function (username) {
+          return cachedCall(baseUrl + username + '/repos' + maxPages);
+      };
 
-		this.user = function (username) {
-			return cachedCall(baseUrl + username);
-		};
+      this.user = function (username) {
+          return cachedCall(baseUrl + username);
+      };
   });
