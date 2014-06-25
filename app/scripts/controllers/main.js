@@ -18,6 +18,7 @@ angular.module('githubArenaApp')
       var winnerDelay = 1000;
       var roundDelay = 1500; //2000;
 
+      
       $scope.players[0] = {
           name: 'seriema',
           total: 0
@@ -83,7 +84,6 @@ angular.module('githubArenaApp')
                   $scope.players[winner].total += 1;
               }, winnerDelay);
           } (newRound));
-
           $scope.wait();
       };
 
