@@ -18,7 +18,10 @@ angular.module('githubArenaApp')
       var winnerDelay = 1000;
       var roundDelay = 1500; //2000;
 
-      
+      var winningSound = new Howl({
+          urls: ['sound/win.mp3']
+      });
+
       $scope.players[0] = {
           name: 'seriema',
           total: 0
