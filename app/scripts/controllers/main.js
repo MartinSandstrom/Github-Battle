@@ -19,7 +19,7 @@ angular.module('githubArenaApp')
       var roundDelay = 1500; //2000;
 
       var winningSound = new Howl({
-          urls: ['sound/win.mp3']
+          urls: ['sounds/win.mp3']
       });
 
       $scope.players[0] = {
@@ -46,6 +46,7 @@ angular.module('githubArenaApp')
       };
 
       $scope.fight = function () {
+          winningSound.play();
           var promises = [];
           $scope.roundsDone = false;
 

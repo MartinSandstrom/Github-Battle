@@ -1,4 +1,4 @@
-// Generated on 2014-06-27 using generator-angular 0.9.1
+// Generated on 2014-06-17 using generator-angular 0.9.0-1
 'use strict';
 
 // # Globbing
@@ -47,6 +47,10 @@ module.exports = function (grunt) {
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
         tasks: ['newer:copy:styles', 'autoprefixer']
+      },
+      sounds: {
+        files: ['<%= yeoman.app %>/sounds/{,*/}*.mp3'],
+        tasks: 'newer:copy:sounds'
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -109,7 +113,6 @@ module.exports = function (grunt) {
         }
       }
     },
-
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
@@ -162,12 +165,8 @@ module.exports = function (grunt) {
 
     // Automatically inject Bower components into the app
     wiredep: {
-      options: {
-	cwd: '<%= yeoman.app %>'
-      },
       app: {
-        src: ['<%= yeoman.app %>/index.html'],
-	ignorePath:  /..\//
+        src: ['<%= yeoman.app %>/index.html']
       }
     },
 
@@ -321,7 +320,7 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: 'bower_components/bootstrap/dist',
+          cwd: '<%= yeoman.app %>/bower_components/bootstrap/dist',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
         }]
@@ -331,19 +330,27 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      sounds: {
+          expand: true,
+          cwd: '<%= yeoman.app %>/sounds',
+          dest: 'dist/sounds/',
+          src: '{,*/}*.mp3'
       }
     },
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'copy:styles'
+        'copy:styles',
+        'copy:sounds'
       ],
       test: [
         'copy:styles'
       ],
       dist: [
         'copy:styles',
+        'copy:sounds',
         'imagemin',
         'svgmin'
       ]
