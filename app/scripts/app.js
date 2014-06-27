@@ -14,7 +14,6 @@ angular
     'ngResource',
     'ngRoute',
     'ngTouch',
-		'ui.bootstrap',
 		'countTo'
   ])
 	.value('_', window._)
