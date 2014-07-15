@@ -44,12 +44,9 @@ angular.module('githubArenaApp')
 		];
 
 		function countRepoProperty(player, property) {
-			var properties = _.map(player.repoData, function (repo) {
-				return repo[property];
-			});
-			var sum = _.reduce(properties, function (memo, num) {
-				return memo + num;
-			});
+			var sum = player.repoData.reduce(function (memo, repo) {
+				return memo + repo[property];
+			}, 0);
 			return sum;
 		}
 
