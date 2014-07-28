@@ -28,7 +28,7 @@ angular.module('githubArenaApp')
       };
 
       $scope.players[1] = {
-          name: 'odetocode',
+          name: 'martinsandstrom',
           total: 0
       };
 
