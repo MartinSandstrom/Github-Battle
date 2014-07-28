@@ -46,7 +46,6 @@ angular.module('githubArenaApp')
       };
 
       $scope.fight = function () {
-          winningSound.play();
           var promises = [];
           $scope.roundsDone = false;
 
@@ -78,11 +77,11 @@ angular.module('githubArenaApp')
               $scope.master.name = $scope.players[master].name;
               return;
           }
-
           var newRound = Rounds.startNew();
           $scope.rounds.push(newRound);
           (function (current) {
               $timeout(function () {
+                  winningSound.play();
                   var winner = current.score($scope.players[0]) > current.score($scope.players[1]) ? 0 : 1;
                   current.winner = $scope.players[winner];
                   $scope.players[winner].total += 1;
